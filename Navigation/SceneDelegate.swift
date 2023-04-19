@@ -21,9 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         feedViewController.title = "Лента"
         feedViewController.view.backgroundColor = .systemBackground
 
-        let profileViewController = ViewController()
-        profileViewController.title = "Профиль"
-        profileViewController.view.backgroundColor = .systemBackground
+        let profileViewController = ProfileViewController()
 
         let postViewController = PostViewController()
         postViewController.title = "Просмотр поста"
@@ -40,6 +38,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             UINavigationController(rootViewController:  $0)
         }
         tabBarController.selectedIndex = 0
+        tabBarController.tabBar.backgroundColor = .white
 
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
