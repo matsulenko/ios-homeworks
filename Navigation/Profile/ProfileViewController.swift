@@ -1,16 +1,51 @@
-//
-//  ProfileViewController.swift
-//  Navigation
-//
-//  Created by Matsulenko on 18.04.2023.
-//
-
 import UIKit
 
 class ProfileViewController: UIViewController {
+    
+    private lazy var profileHeaderView: ProfileHeaderView = {
+        let profileHeaderView = ProfileHeaderView()
+        profileHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return profileHeaderView
+    }()
+    
+//    private lazy var readPostButton: UIButton = {
+//        let button = UIButton()
+//            button.translatesAutoresizingMaskIntoConstraints = false
+//            button.setTitle("Посмотреть пост", for: .normal)
+//            button.setTitleColor(.systemRed, for: .normal)
+//
+//            return button
+//        }()
+    
+    private lazy var donateMoneyButton: UIButton = {
+        let button = UIButton()
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        button.setTitle("Donate $1,000", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18.0, weight: .regular)
+        button.setTitleColor(.white, for: .normal)
+        
+        button.contentMode = .center
+        
+        button.backgroundColor = .systemBlue
+
+        button.addTarget(self, action: #selector(donateMoney), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    @objc
+    private func donateMoney() {
+        print("You have donated $1,000")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        addSubviews()
+        setupConstraints()
         
         title = "Профиль"
         view.backgroundColor = .systemGray4
@@ -25,26 +60,26 @@ class ProfileViewController: UIViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
                 
     }
-    
-    override func viewWillLayoutSubviews() {
-        let profileHeaderView = ProfileHeaderView()
-            profileHeaderView.frame = CGRect(
-                x: 0,
-                y: 0,
-                width: view.frame.width,
-                height: view.frame.height
-            )
+
+    private func addSubviews() {
         view.addSubview(profileHeaderView)
+        view.addSubview(donateMoneyButton)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    private func setupConstraints() {
+        let safeAreaGuide = view.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            profileHeaderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            profileHeaderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            profileHeaderView.topAnchor.constraint(equalTo: safeAreaGuide.topAnchor),
+            profileHeaderView.heightAnchor.constraint(equalToConstant: 220),
+            
+            donateMoneyButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            donateMoneyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            donateMoneyButton.bottomAnchor.constraint(equalTo: safeAreaGuide.bottomAnchor),
+            donateMoneyButton.heightAnchor.constraint(equalToConstant: 50.0),
+        ])
     }
-    */
-
 }
+
