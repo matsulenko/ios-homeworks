@@ -25,11 +25,8 @@ class ProfileHeaderView: UIView {
     
     private lazy var statusTextField: TextFieldWithPadding = {
         let textField = TextFieldWithPadding()
-        
         textField.translatesAutoresizingMaskIntoConstraints = false
-        
         textField.placeholder = "Enter text here"
-        textField.text = status
         textField.font = UIFont.systemFont(ofSize: 15.0, weight: .regular)
         textField.textColor = .black
         textField.autocorrectionType = UITextAutocorrectionType.no
@@ -46,40 +43,22 @@ class ProfileHeaderView: UIView {
         
     }()
     
-    @objc
-    private func statusTextChanged(_ textField: UITextField) {
-        status = textField.text
-    }
-    
     private lazy var setStatusButton: UIButton = {
         let button = UIButton()
-        
         button.translatesAutoresizingMaskIntoConstraints = false
-        
         button.layer.cornerRadius = 4.0
-        
         button.layer.shadowOffset = CGSize(width: 4.0, height: 4.0)
         button.layer.shadowRadius = 4.0
         button.layer.shadowOpacity = 0.7
-        
-        
         button.setTitle("Set status", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18.0, weight: .regular)
         button.setTitleColor(.white, for: .normal)
-        
         button.contentMode = .center
-        
         button.backgroundColor = .systemBlue
-
         button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
         
         return button
     }()
-    
-    @objc
-    private func buttonPressed() {
-        statusLabel.text = status
-    }
     
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
@@ -94,21 +73,27 @@ class ProfileHeaderView: UIView {
         return imageView
     }()
     
-    convenience init() {
-        self.init(frame: .zero)
-        fullNameLabel.text = name
-        statusLabel.text = status
-    }
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         addSubviews()
         setupConstraints()
+        fullNameLabel.text = name
+        statusLabel.text = status
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc
+    private func statusTextChanged(_ textField: UITextField) {
+        status = textField.text
+    }
+    
+    @objc
+    private func buttonPressed() {
+        statusLabel.text = status
     }
 
     private func addSubviews() {
@@ -142,24 +127,5 @@ class ProfileHeaderView: UIView {
             statusTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
             statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 16.0),
         ])
-    }
-}
-
-class TextFieldWithPadding: UITextField {
-    var textPadding = UIEdgeInsets(
-        top: 0,
-        left: 12,
-        bottom: 0,
-        right: 12
-    )
-
-    override func textRect(forBounds bounds: CGRect) -> CGRect {
-        let rect = super.textRect(forBounds: bounds)
-        return rect.inset(by: textPadding)
-    }
-
-    override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        let rect = super.editingRect(forBounds: bounds)
-        return rect.inset(by: textPadding)
     }
 }
