@@ -1,6 +1,6 @@
 import UIKit
 
-struct Post {
+struct LastPost {
     var title: String
 }
 
