@@ -10,8 +10,10 @@
 		BCB08D3429DF3649009B9A50 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB08D3329DF3649009B9A50 /* FeedViewController.swift */; };
 		BCB08D3629DF394D009B9A50 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB08D3529DF394D009B9A50 /* PostViewController.swift */; };
 		BCB08D3829DF58A9009B9A50 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB08D3729DF58A9009B9A50 /* InfoViewController.swift */; };
+		BCD18A252A0930A00085DC39 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD18A242A0930A00085DC39 /* LogInViewController.swift */; };
 		BCE3D8E029EF36FE00528DA1 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE3D8DF29EF36FE00528DA1 /* ProfileHeaderView.swift */; };
 		BCE3D8E329EF3A0B00528DA1 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE3D8E229EF3A0B00528DA1 /* ProfileViewController.swift */; };
+		BCE4F8A82A099FF800ED45C5 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE4F8A72A099FF800ED45C5 /* UIImage.swift */; };
 		BCE58AF22A09250C001D0977 /* TextFieldWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE58AF12A09250C001D0977 /* TextFieldWithPadding.swift */; };
 		BCF9F41029DDF6B000266A70 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF9F40F29DDF6B000266A70 /* AppDelegate.swift */; };
 		BCF9F41229DDF6B000266A70 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF9F41129DDF6B000266A70 /* SceneDelegate.swift */; };
@@ -24,8 +26,10 @@
 		BCB08D3329DF3649009B9A50 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		BCB08D3529DF394D009B9A50 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		BCB08D3729DF58A9009B9A50 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		BCD18A242A0930A00085DC39 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		BCE3D8DF29EF36FE00528DA1 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		BCE3D8E229EF3A0B00528DA1 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		BCE4F8A72A099FF800ED45C5 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		BCE58AF12A09250C001D0977 /* TextFieldWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithPadding.swift; sourceTree = "<group>"; };
 		BCF9F40C29DDF6B000266A70 /* Navigation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navigation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCF9F40F29DDF6B000266A70 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -52,6 +56,7 @@
 			children = (
 				BCE3D8DF29EF36FE00528DA1 /* ProfileHeaderView.swift */,
 				BCE3D8E229EF3A0B00528DA1 /* ProfileViewController.swift */,
+				BCD18A242A0930A00085DC39 /* LogInViewController.swift */,
 				BCE58AF12A09250C001D0977 /* TextFieldWithPadding.swift */,
 			);
 			path = Profile;
@@ -79,6 +84,7 @@
 				BCE3D8E129EF370400528DA1 /* Profile */,
 				BCF9F40F29DDF6B000266A70 /* AppDelegate.swift */,
 				BCF9F41129DDF6B000266A70 /* SceneDelegate.swift */,
+				BCE4F8A72A099FF800ED45C5 /* UIImage.swift */,
 				BCF9F41329DDF6B000266A70 /* ViewController.swift */,
 				BCB08D3329DF3649009B9A50 /* FeedViewController.swift */,
 				BCB08D3529DF394D009B9A50 /* PostViewController.swift */,
@@ -161,6 +167,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCF9F41429DDF6B000266A70 /* ViewController.swift in Sources */,
+				BCE4F8A82A099FF800ED45C5 /* UIImage.swift in Sources */,
 				BCF9F41029DDF6B000266A70 /* AppDelegate.swift in Sources */,
 				BCB08D3429DF3649009B9A50 /* FeedViewController.swift in Sources */,
 				BCF9F41229DDF6B000266A70 /* SceneDelegate.swift in Sources */,
@@ -168,6 +175,7 @@
 				BCB08D3829DF58A9009B9A50 /* InfoViewController.swift in Sources */,
 				BCE3D8E329EF3A0B00528DA1 /* ProfileViewController.swift in Sources */,
 				BCE58AF22A09250C001D0977 /* TextFieldWithPadding.swift in Sources */,
+				BCD18A252A0930A00085DC39 /* LogInViewController.swift in Sources */,
 				BCB08D3629DF394D009B9A50 /* PostViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -94,6 +94,7 @@ class ProfileHeaderView: UIView {
     @objc
     private func buttonPressed() {
         statusLabel.text = status
+        self.endEditing(true)
     }
 
     private func addSubviews() {
@@ -102,6 +103,11 @@ class ProfileHeaderView: UIView {
         addSubview(setStatusButton)
         addSubview(avatarImageView)
         addSubview(statusTextField)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.endEditing(true)
+        return false
     }
     
     private func setupConstraints() {
