@@ -117,7 +117,7 @@ class LogInViewController: UIViewController {
         return button
     }()
     
-    var insetsAdded = false
+    var keyboardIsActive = false
     
     @objc
     private func openProfile(_ button: UIButton) {
@@ -131,8 +131,7 @@ class LogInViewController: UIViewController {
         
         addSubviews()
         setupConstraints()
-        
-        view.backgroundColor = .white
+        setupView()
         
     }
     
@@ -152,15 +151,19 @@ class LogInViewController: UIViewController {
     
     @objc func willShowKeyboard(_ notification: NSNotification) {
         let keyboardHeight = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height
-        if insetsAdded == false {
+        if keyboardIsActive == false {
             scrollView.contentInset.bottom += keyboardHeight ?? 0.0
-            insetsAdded = true
+            keyboardIsActive = true
         }
     }
     
     @objc func willHideKeyboard(_ notification: NSNotification) {
         scrollView.contentInset.bottom = 0.0
-        insetsAdded = false
+        keyboardIsActive = false
+    }
+    
+    private func setupView() {
+        view.backgroundColor = .white
     }
     
     private func setupKeyboardObservers() {

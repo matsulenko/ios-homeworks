@@ -1,6 +1,10 @@
 import UIKit
 
-class ProfileHeaderView: UIView {
+class ProfileTableHederView: UIView {
+    
+    @IBAction func done(_ sender: TextFieldWithPadding) {
+        sender.resignFirstResponder()
+    }
     
     private let name = "Hipster Cat"
     private var status: String? = "Waiting for something..."
@@ -23,7 +27,7 @@ class ProfileHeaderView: UIView {
         return label
     }()
     
-    private lazy var statusTextField: TextFieldWithPadding = {
+    private lazy var statusTextField: TextFieldWithPadding = { [unowned self] in
         let textField = TextFieldWithPadding()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.placeholder = "Enter text here"
@@ -38,7 +42,8 @@ class ProfileHeaderView: UIView {
         textField.layer.borderWidth = 1.0
         textField.layer.borderColor = UIColor.black.cgColor
         textField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
-        
+        textField.addTarget(self, action: #selector(buttonPressed), for: .editingDidEndOnExit)
+
         return textField
         
     }()
@@ -77,9 +82,8 @@ class ProfileHeaderView: UIView {
         super.init(frame: frame)
         
         addSubviews()
+        setupView()
         setupConstraints()
-        fullNameLabel.text = name
-        statusLabel.text = status
     }
     
     required init?(coder: NSCoder) {
@@ -95,6 +99,12 @@ class ProfileHeaderView: UIView {
     private func buttonPressed() {
         statusLabel.text = status
         self.endEditing(true)
+    }
+    
+    private func setupView() {
+        fullNameLabel.text = name
+        statusLabel.text = status
+        backgroundColor = .systemGray6
     }
 
     private func addSubviews() {
@@ -132,6 +142,8 @@ class ProfileHeaderView: UIView {
             statusTextField.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16.0),
             statusTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
             statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 16.0),
+            
+            self.bottomAnchor.constraint(equalTo: setStatusButton.bottomAnchor, constant: 16.0)
         ])
     }
 }

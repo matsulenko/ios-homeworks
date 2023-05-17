@@ -34,7 +34,7 @@ class FeedViewController: UIViewController {
     }
 
     @objc func buttonPressed(_ sender: UIButton) {
-        let lastPost = Post(title: "Новый пост")
+        let lastPost = LastPost(title: "Новый пост")
 
         let postViewController = PostViewController()
         postViewController.title = lastPost.title

@@ -2,69 +2,132 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
-    private lazy var profileHeaderView: ProfileHeaderView = {
-        let profileHeaderView = ProfileHeaderView()
-        profileHeaderView.translatesAutoresizingMaskIntoConstraints = false
+    fileprivate let data = posts
+    
+    var keyboardIsActive = false
+    
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView.init(
+            frame: .zero,
+            style: .plain
+        )
         
-        return profileHeaderView
-    }()
-    
-    
-    private lazy var donateMoneyButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Donate $1,000", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18.0, weight: .regular)
-        button.setTitleColor(.white, for: .normal)
-        button.contentMode = .center
-        button.backgroundColor = .systemBlue
-        button.addTarget(self, action: #selector(donateMoney), for: .touchUpInside)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         
-        return button
+        return tableView
     }()
-    
-    @objc
-    private func donateMoney() {
-        print("You have donated $1,000")
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         addSubviews()
         setupConstraints()
-        
-        title = "Профиль"
-        view.backgroundColor = .systemGray4
+        setupTable()
+        setupView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = .white
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.isHidden = true
+        setupKeyboardObservers()
     }
-
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        removeKeyboardObservers()
+    }
+    
+    private func setupKeyboardObservers() {
+        let notificationCenter = NotificationCenter.default
+        
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(self.willShowKeyboard(_:)),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(self.willHideKeyboard(_:)),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+    
+    private func removeKeyboardObservers() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.removeObserver(self)
+    }
+    
+    @objc func willShowKeyboard(_ notification: NSNotification) {
+        let keyboardHeight = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height
+        if keyboardIsActive == false {
+            tableView.contentInset.bottom += keyboardHeight ?? 0.0
+            keyboardIsActive = true
+        }
+    }
+    
+    @objc func willHideKeyboard(_ notification: NSNotification) {
+        tableView.contentInset.bottom = 0.0
+        keyboardIsActive = false
+    }
+    
     private func addSubviews() {
-        view.addSubview(profileHeaderView)
-        view.addSubview(donateMoneyButton)
+        view.addSubview(tableView)
+    }
+    
+    private func setupTable() {
+        
+        let headerView = ProfileTableHederView()
+        tableView.setAndLayoutTableHeaderView(headerView)
+        tableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.id)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = UITableView.automaticDimension
+    }
+    
+    private func setupView() {
+        view.backgroundColor = .systemGray6
     }
     
     private func setupConstraints() {
         let safeAreaGuide = view.safeAreaLayoutGuide
-        
         NSLayoutConstraint.activate([
-            profileHeaderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            profileHeaderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            profileHeaderView.topAnchor.constraint(equalTo: safeAreaGuide.topAnchor),
-            profileHeaderView.heightAnchor.constraint(equalToConstant: 220),
-            
-            donateMoneyButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            donateMoneyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            donateMoneyButton.bottomAnchor.constraint(equalTo: safeAreaGuide.bottomAnchor),
-            donateMoneyButton.heightAnchor.constraint(equalToConstant: 50.0),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: safeAreaGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: safeAreaGuide.bottomAnchor),
         ])
     }
 }
 
+extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        data.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.id, for: indexPath) as? PostTableViewCell else { return UITableViewCell() }
+        let post = data[indexPath.row]
+        cell.configure(with: post)
+        return cell
+    }
+        
+}
+
+extension UITableView {
+    func setAndLayoutTableHeaderView(_ header: UIView) {
+        self.tableHeaderView = header
+        self.tableHeaderView?.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            header.widthAnchor.constraint(equalTo: self.widthAnchor)
+        ])
+        header.setNeedsLayout()
+        header.layoutIfNeeded()
+        header.frame.size =  header.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        self.tableHeaderView = header
+    }
+}
