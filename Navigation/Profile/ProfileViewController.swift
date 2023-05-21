@@ -1,5 +1,4 @@
 import UIKit
-
 class ProfileViewController: UIViewController {
     
     fileprivate let data = posts
@@ -9,7 +8,7 @@ class ProfileViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView.init(
             frame: .zero,
-            style: .plain
+            style: .grouped
         )
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -83,9 +82,13 @@ class ProfileViewController: UIViewController {
         let headerView = ProfileTableHederView()
         tableView.setAndLayoutTableHeaderView(headerView)
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.id)
+        tableView.register(PhotosTableViewCell.self, forHeaderFooterViewReuseIdentifier: PhotosTableViewCell.id)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = UITableView.automaticDimension
+        
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 0.0
+        }
     }
     
     private func setupView() {
@@ -101,6 +104,13 @@ class ProfileViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: safeAreaGuide.bottomAnchor),
         ])
     }
+    
+    @objc
+    func openPhotos() {
+        let photosViewController = PhotosViewController()
+
+        navigationController?.pushViewController(photosViewController, animated: true)
+    }
 }
 
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
@@ -110,10 +120,28 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.id, for: indexPath) as? PostTableViewCell else { return UITableViewCell() }
-        let post = data[indexPath.row]
-        cell.configure(with: post)
-        return cell
+    
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.id, for: indexPath) as? PostTableViewCell else { return UITableViewCell() }
+            let post = data[indexPath.row]
+            cell.configure(with: post)
+            return cell
+        
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        viewForHeaderInSection section: Int
+    ) -> UIView? {
+
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: PhotosTableViewCell.id
+        ) as? PhotosTableViewCell else {
+            fatalError("could not dequeueReusableCell")
+        }
+        
+        headerView.tapGestureRecognizer.addTarget(self, action: #selector(self.openPhotos))
+
+        return headerView
     }
         
 }
@@ -131,3 +159,5 @@ extension UITableView {
         self.tableHeaderView = header
     }
 }
+
+
