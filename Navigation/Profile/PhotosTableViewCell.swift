@@ -2,12 +2,36 @@ import UIKit
 
 final class PhotosTableViewCell: UITableViewHeaderFooterView {
     
+    
     let tapGestureRecognizer = UITapGestureRecognizer()
     
     static let id = "PhotosTableViewCell"
     
-    // Можно поменять количество фото на экране профиля, отступы скорректируются
-    private var numberOfPhotos = 4
+    private enum LayoutConstant {
+        static let spacing: CGFloat = 8.0
+    }
+    
+    fileprivate let numberOfPhotos: Int = 4
+    
+    fileprivate var photos: [String] = []
+    
+    private let collectionView: UICollectionView = {
+        let viewLayout = UICollectionViewFlowLayout()
+        
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: viewLayout
+        )
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .systemBackground
+        
+        collectionView.register(
+            PhotosCollectionViewCell.self,
+            forCellWithReuseIdentifier: PhotosCollectionViewCell.identifier
+        )
+        
+        return collectionView
+    }()
     
     private let title: UILabel = {
         let label = UILabel()
@@ -66,9 +90,12 @@ final class PhotosTableViewCell: UITableViewHeaderFooterView {
         contentView.addSubview(title)
         contentView.addSubview(arrow)
         contentView.addSubview(separator)
+        contentView.addSubview(collectionView)
     }
     
     private func setupConstraints() {
+        let constantWidthMinus = CGFloat(((-8*(2+numberOfPhotos))/numberOfPhotos))
+        
         NSLayoutConstraint.activate([
             title.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12.0),
             title.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12.0),
@@ -81,6 +108,12 @@ final class PhotosTableViewCell: UITableViewHeaderFooterView {
             separator.widthAnchor.constraint(equalTo: contentView.widthAnchor),
             separator.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
+            collectionView.leadingAnchor.constraint(equalTo: title.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: arrow.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 12.0),
+            collectionView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1/CGFloat(numberOfPhotos), constant: constantWidthMinus),
+
+            contentView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 24.0),
         ])
     }
 
@@ -88,47 +121,93 @@ final class PhotosTableViewCell: UITableViewHeaderFooterView {
         
         contentView.backgroundColor = .white
         
-        if numberOfPhotos > 0 {
-            for i in 1...numberOfPhotos {
-                let photo = UIImageView(frame: .zero)
-                photo.translatesAutoresizingMaskIntoConstraints = false
-                photo.contentMode = .scaleAspectFill
-                photo.layer.masksToBounds = true
-                photo.layer.cornerRadius = 6
-                let imageName = "cats" + String(i)
-                photo.image = UIImage(named: imageName)
-                
-                contentView.addSubview(photo)
-                
-                if i == 1 {
-                    NSLayoutConstraint.activate([
-                        photo.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12.0),
-                        contentView.bottomAnchor.constraint(equalTo: photo.bottomAnchor, constant: 24.0),
-                        
-                    ])
-                } else {
-                    let previousPhoto = contentView.subviews.dropLast().last
-                    
-                    NSLayoutConstraint.activate([
-                        photo.leadingAnchor.constraint(equalTo: previousPhoto!.trailingAnchor, constant: 8.0),
-                    ])
-                }
-                
-                if i == numberOfPhotos {
-                    NSLayoutConstraint.activate([
-                        photo.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12.0),
-                    ])
-                }
-                
-                let constantWidthMinus = CGFloat(((-8*(2+numberOfPhotos))/numberOfPhotos))
-                
-                NSLayoutConstraint.activate([
-                    photo.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 12.0),
-                    photo.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1/CGFloat(numberOfPhotos), constant: constantWidthMinus),
-                    photo.heightAnchor.constraint(equalTo: photo.widthAnchor)
-                ])
-                
-            }
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        
+        addPhotos()
+        
+    }
+    
+    private func addPhotos() {
+        for i in 1...numberOfPhotos {
+            let imageName = "cats" + String(i)
+            photos.append(imageName)
         }
+    }
+}
+
+extension PhotosTableViewCell: UICollectionViewDataSource {
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
+        photos.count
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: PhotosCollectionViewCell.identifier,
+            for: indexPath) as! PhotosCollectionViewCell
+        
+        let photo = photos[indexPath.row]
+        cell.setupMain(with: photo)
+        
+        return cell
+    }
+}
+
+extension PhotosTableViewCell: UICollectionViewDelegateFlowLayout {
+    
+    private func itemWidth(
+        for width: CGFloat,
+        spacing: CGFloat
+    ) -> CGFloat {
+        let itemsInRow: CGFloat = 4
+        
+        let totalSpacing: CGFloat = CGFloat((8*(2+numberOfPhotos)))
+        let finalWidth = (width - totalSpacing) / itemsInRow
+        
+        return floor(finalWidth)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let width = itemWidth(
+            for: contentView.frame.width,
+            spacing: LayoutConstant.spacing
+        )
+        
+        return CGSize(width: width, height: width)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumLineSpacingForSectionAt section: Int
+    ) -> CGFloat {
+        LayoutConstant.spacing
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumInteritemSpacingForSectionAt section: Int
+    ) -> CGFloat {
+        LayoutConstant.spacing
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        cell.contentView.backgroundColor = .white
     }
 }

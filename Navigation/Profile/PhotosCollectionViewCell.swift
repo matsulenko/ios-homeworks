@@ -39,4 +39,11 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     ) {
         photosImageView.image = UIImage(named: photos)
     }
+    
+    func setupMain(
+        with photos: String
+    ) {
+        photosImageView.image = UIImage(named: photos)
+        photosImageView.layer.cornerRadius = 6
+    }
 }
