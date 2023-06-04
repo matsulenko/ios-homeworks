@@ -1,4 +1,6 @@
 import UIKit
+import StorageService
+
 class ProfileViewController: UIViewController {
     
     fileprivate let data = posts
@@ -92,7 +94,11 @@ class ProfileViewController: UIViewController {
     }
     
     private func setupView() {
+        #if DEBUG
+        view.backgroundColor = .white
+        #else
         view.backgroundColor = .systemGray6
+        #endif
     }
     
     private func setupConstraints() {

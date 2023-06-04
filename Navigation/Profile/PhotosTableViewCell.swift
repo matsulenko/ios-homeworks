@@ -66,7 +66,11 @@ final class PhotosTableViewCell: UITableViewHeaderFooterView {
     
     private let separator: UIView = {
         let view = UIView()
+        #if DEBUG
+        view.backgroundColor = .white
+        #else
         view.backgroundColor = .systemGray6
+        #endif
         view.translatesAutoresizingMaskIntoConstraints = false
         
         return view

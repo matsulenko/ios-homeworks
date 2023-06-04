@@ -1,14 +1,14 @@
 import UIKit
 
-struct Post {
-    var author: String
-    var description: String
-    var image: String
-    var likes: Int
-    var views: Int
+public struct Post {
+    public var author: String
+    public var description: String
+    public var image: String
+    public var likes: Int
+    public var views: Int
 }
 
-var posts = [
+public var posts = [
     Post(
         author: "Verstappen",
         description: "Макс Ферстаппен (1-й): «Хорошая была гонка! В начале я старался избегать неприятностей, и всё шло нормально, я одну за другой обгонял машины соперников, после чего мне удалось проехать много кругов на одном комплекте жёстких шин – думаю, нам удалось добиться успеха именно благодаря этому.",

@@ -213,7 +213,11 @@ class ProfileTableHederView: UIView {
     private func setupView() {
         fullNameLabel.text = name
         statusLabel.text = status
+        #if DEBUG
+        backgroundColor = .white
+        #else
         backgroundColor = .systemGray6
+        #endif
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.launchAnimationExample))
         tapGesture.numberOfTapsRequired = 1
         tapGesture.numberOfTouchesRequired = 1
