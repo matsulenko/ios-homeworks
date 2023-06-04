@@ -1,10 +1,11 @@
 import UIKit
+import StorageService
 
 final class PostTableViewCell: UITableViewCell {
     
     static let id = "ProfileCell"
     
-    private let authorLabel: UILabel = {
+    public let authorLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20.0, weight: .bold)
