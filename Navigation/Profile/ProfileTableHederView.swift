@@ -1,10 +1,7 @@
 import UIKit
+import SnapKit
 
 class ProfileTableHederView: UIView {
-    
-    @IBAction func done(_ sender: TextFieldWithPadding) {
-        sender.resignFirstResponder()
-    }
     
     private let name = "Hipster Cat"
     private var status: String? = "Waiting for something..."
@@ -108,6 +105,10 @@ class ProfileTableHederView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func done(_ sender: TextFieldWithPadding) {
+        sender.resignFirstResponder()
     }
     
     @objc
@@ -242,40 +243,52 @@ class ProfileTableHederView: UIView {
     }
     
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            fullNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16.0),
-            fullNameLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 27.0),
-            
-            statusLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16.0),
-            statusLabel.bottomAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 30.0),
-            
-            setStatusButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
-            setStatusButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
-            setStatusButton.topAnchor.constraint(equalTo: statusTextField.bottomAnchor, constant: 16.0),
-            setStatusButton.heightAnchor.constraint(equalToConstant: 50.0),
-            
-            avatarImageView.widthAnchor.constraint(equalToConstant: 100.0),
-            avatarImageView.heightAnchor.constraint(equalToConstant: 100.0),
-            avatarImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
-            avatarImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16.0),
-            
-            statusTextField.heightAnchor.constraint(equalToConstant: 40.0),
-            statusTextField.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16.0),
-            statusTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
-            statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 16.0),
-            
-            whiteView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            whiteView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            whiteView.topAnchor.constraint(equalTo: self.topAnchor),
-            whiteView.heightAnchor.constraint(equalToConstant: 2000),
-            
-            xMark.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -24),
-            xMark.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 24),
-            xMark.heightAnchor.constraint(equalToConstant: 32),
-            xMark.widthAnchor.constraint(equalTo: xMark.heightAnchor),
-            
-            self.bottomAnchor.constraint(equalTo: setStatusButton.bottomAnchor, constant: 16.0)
-        ])
+        fullNameLabel.snp.makeConstraints { (make) -> Void in
+            make.leading.equalTo(avatarImageView.snp.trailing).offset(16)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(27)
+        }
+        
+        statusLabel.snp.makeConstraints { (make) -> Void in
+            make.leading.equalTo(avatarImageView.snp.trailing).offset(16)
+            make.bottom.equalTo(fullNameLabel.snp.bottom).offset(30)
+        }
+        
+        setStatusButton.snp.makeConstraints { (make) -> Void in
+            make.leading.equalTo(safeAreaLayoutGuide.snp.leading).offset(16)
+            make.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).offset(-16)
+            make.top.equalTo(statusTextField.snp.bottom).offset(16)
+            make.height.equalTo(50)
+        }
+        
+        avatarImageView.snp.makeConstraints { (make) -> Void in
+            make.width.height.equalTo(100)
+            make.leading.equalTo(safeAreaLayoutGuide.snp.leading).offset(16)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(16)
+        }
+        
+        statusTextField.snp.makeConstraints { (make) -> Void in
+            make.height.equalTo(40)
+            make.leading.equalTo(avatarImageView.snp.trailing).offset(16)
+            make.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).offset(-16)
+            make.top.equalTo(statusLabel.snp.bottom).offset(16)
+        }
+        
+        whiteView.snp.makeConstraints { (make) -> Void in
+            make.leading.equalTo(safeAreaLayoutGuide.snp.leading)
+            make.trailing.equalTo(safeAreaLayoutGuide.snp.trailing)
+            make.top.equalTo(self.snp.top)
+            make.height.equalTo(2000)
+        }
+        
+        xMark.snp.makeConstraints { (make) -> Void in
+            make.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).offset(-24)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(24)
+            make.height.width.equalTo(32)
+        }
+        
+        self.snp.makeConstraints { (make) -> Void in
+            make.bottom.equalTo(setStatusButton.snp.bottom).offset(16)
+        }
     }
 }
 
