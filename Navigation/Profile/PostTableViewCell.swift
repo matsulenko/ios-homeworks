@@ -1,6 +1,5 @@
 import UIKit
 import StorageService
-import iOSIntPackage
 
 final class PostTableViewCell: UITableViewCell {
     
@@ -79,17 +78,11 @@ final class PostTableViewCell: UITableViewCell {
     }
     
     func configure(with post: Post) {
-        let image = UIImage(named: post.image)
         authorLabel.text = post.author
         descriptionLabel.text = post.description
+        postImageView.image = UIImage(named: post.image)
         likesLabel.text = "Likes: " + String(post.likes)
         viewsLabel.text = "Views: " + String(post.views)
-        ImageProcessor().processImage(sourceImage: image!, filter: .sepia(intensity: 0.7), completion: { img in
-            imageProcessorCompletion(img) })
-    }
-    
-    private func imageProcessorCompletion(_ image: UIImage?) -> Void {
-        postImageView.image = image
     }
     
     private func setupConstraints() {
