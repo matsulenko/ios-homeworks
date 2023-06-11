@@ -80,8 +80,19 @@ class ProfileViewController: UIViewController {
     }
     
     private func setupTable() {
+        var userService: UserService
         
-        let headerView = ProfileTableHederView()
+        #if DEBUG
+        userService = TestUserService()
+        #else
+        userService = CurrentUserService()
+        #endif
+        
+        let user = userService.user        
+        let headerView = ProfileHederView()
+        headerView.fullNameLabel.text = user.fullName
+        headerView.avatarImageView.image = user.avatar
+        headerView.statusLabel.text = user.status
         tableView.setAndLayoutTableHeaderView(headerView)
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.id)
         tableView.register(PhotosTableViewCell.self, forHeaderFooterViewReuseIdentifier: PhotosTableViewCell.id)

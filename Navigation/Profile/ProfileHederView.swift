@@ -1,15 +1,11 @@
 import UIKit
 
-class ProfileTableHederView: UIView {
+class ProfileHederView: UIView {
     
-    @IBAction func done(_ sender: TextFieldWithPadding) {
-        sender.resignFirstResponder()
-    }
-    
-    private let name = "Hipster Cat"
-    private var status: String? = "Waiting for something..."
-    
-    private lazy var fullNameLabel: UILabel = {
+//    private let name = "Hipster Cat"
+    private var status: String?
+//    
+    var fullNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 18.0, weight: .bold)
@@ -18,7 +14,7 @@ class ProfileTableHederView: UIView {
         return label
     }()
     
-    private lazy var statusLabel: UILabel = {
+    var statusLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14.0, weight: .regular)
@@ -65,7 +61,7 @@ class ProfileTableHederView: UIView {
         return button
     }()
     
-    private lazy var avatarImageView: UIImageView = {
+    var avatarImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
@@ -108,6 +104,10 @@ class ProfileTableHederView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func done(_ sender: TextFieldWithPadding) {
+        sender.resignFirstResponder()
     }
     
     @objc
@@ -211,7 +211,6 @@ class ProfileTableHederView: UIView {
     }
     
     private func setupView() {
-        fullNameLabel.text = name
         statusLabel.text = status
         #if DEBUG
         backgroundColor = .white
@@ -280,7 +279,7 @@ class ProfileTableHederView: UIView {
 }
 
 
-extension ProfileTableHederView: CAAnimationDelegate {
+extension ProfileHederView: CAAnimationDelegate {
 
     func animationDidStart(
         _ anim: CAAnimation

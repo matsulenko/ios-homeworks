@@ -33,6 +33,8 @@ class LogInViewController: UIViewController {
         return imageView
     }()
     
+    private var login: String?
+    
     private lazy var loginField: TextFieldWithPadding = { [unowned self] in
         let textField = TextFieldWithPadding()
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -46,6 +48,7 @@ class LogInViewController: UIViewController {
         textField.returnKeyType = UIReturnKeyType.done
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
         textField.backgroundColor = .systemGray6
+        textField.addTarget(self, action: #selector(loginChanged), for: .editingChanged)
         
         textField.delegate = self
         
@@ -117,13 +120,41 @@ class LogInViewController: UIViewController {
         return button
     }()
     
+    public let errorLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 14.0, weight: .bold)
+        label.textColor = .systemRed
+        label.numberOfLines = 2
+        label.textAlignment = .center
+        label.text = "Проверьте правильность введённых данных"
+        label.alpha = 0
+        
+        return label
+    }()
+    
     var keyboardIsActive = false
     
     @objc
+    private func loginChanged(_ textField: UITextField) {
+        login = textField.text
+    }
+    
+    @objc
     private func openProfile(_ button: UIButton) {
+        var userService: UserService
+        #if DEBUG
+        userService = TestUserService()
+        #else
+        userService = CurrentUserService()
+        #endif
         let profileViewController = ProfileViewController()
 
-        navigationController?.pushViewController(profileViewController, animated: true)
+        if userService.userCheck(login: login ?? "") != nil {
+            navigationController?.pushViewController(profileViewController, animated: true)
+        } else {
+            errorLabel.alpha = 1
+        }
     }
 
     override func viewDidLoad() {
@@ -196,6 +227,7 @@ class LogInViewController: UIViewController {
         contentView.addSubview(vkLogoImageView)
         contentView.addSubview(form)
         contentView.addSubview(logInButton)
+        contentView.addSubview(errorLabel)
     }
     
     private func setupConstraints() {
@@ -228,6 +260,10 @@ class LogInViewController: UIViewController {
             logInButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             logInButton.heightAnchor.constraint(equalToConstant: 50),
             logInButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            
+            errorLabel.topAnchor.constraint(equalTo: logInButton.bottomAnchor, constant: 16),
+            errorLabel.leadingAnchor.constraint(equalTo: logInButton.leadingAnchor),
+            errorLabel.trailingAnchor.constraint(equalTo: logInButton.trailingAnchor),
         ])
     }
 }
