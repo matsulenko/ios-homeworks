@@ -1,5 +1,15 @@
 import UIKit
 
+protocol LoginViewControllerDelegate {
+    func check(enteredLogin: String?, enteredPassword: String?) -> Bool
+}
+
+struct LoginInspector: LoginViewControllerDelegate {
+    func check(enteredLogin: String?, enteredPassword: String?) -> Bool  {
+        Checker.shared.check(enteredLogin: enteredLogin, enteredPassword: enteredPassword)
+    }
+}
+
 class LogInViewController: UIViewController {
     
     private lazy var scrollView: UIScrollView = {
@@ -34,6 +44,7 @@ class LogInViewController: UIViewController {
     }()
     
     private var login: String?
+    private var password: String?
     
     private lazy var loginField: TextFieldWithPadding = { [unowned self] in
         let textField = TextFieldWithPadding()
@@ -69,6 +80,7 @@ class LogInViewController: UIViewController {
         textField.returnKeyType = UIReturnKeyType.done
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
         textField.backgroundColor = .systemGray6
+        textField.addTarget(self, action: #selector(passwordChanged), for: .editingChanged)
         
         textField.delegate = self
         
@@ -120,24 +132,27 @@ class LogInViewController: UIViewController {
         return button
     }()
     
-    public let errorLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 14.0, weight: .bold)
-        label.textColor = .systemRed
-        label.numberOfLines = 2
-        label.textAlignment = .center
-        label.text = "Проверьте правильность введённых данных"
-        label.alpha = 0
-        
-        return label
-    }()
+    private var loginDelegate: LoginViewControllerDelegate
     
     var keyboardIsActive = false
+    
+    init(loginDelegate: LoginViewControllerDelegate) {
+        self.loginDelegate = loginDelegate
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     @objc
     private func loginChanged(_ textField: UITextField) {
         login = textField.text
+    }
+    
+    @objc
+    private func passwordChanged(_ textField: UITextField) {
+        password = textField.text
     }
     
     @objc
@@ -150,10 +165,19 @@ class LogInViewController: UIViewController {
         #endif
         let profileViewController = ProfileViewController()
 
-        if userService.userCheck(login: login ?? "") != nil {
+        if self.loginDelegate.check(enteredLogin: login, enteredPassword: password) == true {
             navigationController?.pushViewController(profileViewController, animated: true)
         } else {
-            errorLabel.alpha = 1
+            let alert = UIAlertController(title: "Неверный логин или пароль", message: "Проверьте правильность введённых данных", preferredStyle: .alert)
+
+            alert.addAction(
+                UIAlertAction(
+                    title: "Ок",
+                    style: .default,
+                    handler: nil
+                )
+            )
+            present(alert, animated: true)
         }
     }
 
@@ -227,7 +251,6 @@ class LogInViewController: UIViewController {
         contentView.addSubview(vkLogoImageView)
         contentView.addSubview(form)
         contentView.addSubview(logInButton)
-        contentView.addSubview(errorLabel)
     }
     
     private func setupConstraints() {
@@ -260,10 +283,6 @@ class LogInViewController: UIViewController {
             logInButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             logInButton.heightAnchor.constraint(equalToConstant: 50),
             logInButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
-            errorLabel.topAnchor.constraint(equalTo: logInButton.bottomAnchor, constant: 16),
-            errorLabel.leadingAnchor.constraint(equalTo: logInButton.leadingAnchor),
-            errorLabel.trailingAnchor.constraint(equalTo: logInButton.trailingAnchor),
         ])
     }
 }
