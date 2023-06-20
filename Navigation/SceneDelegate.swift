@@ -13,8 +13,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let feedViewController = FeedViewController()
         feedViewController.title = "Лента"
         feedViewController.view.backgroundColor = .systemBackground
-        
-        let logInViewController = LogInViewController()
+                
+        let loginInspector = MyLoginFactory().makeLoginInspector()
+        let logInViewController = LogInViewController(loginDelegate: loginInspector)
 
         let postViewController = PostViewController()
         postViewController.title = "Просмотр поста"
