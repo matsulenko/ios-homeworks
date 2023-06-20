@@ -42,11 +42,14 @@ class PhotosViewController: UIViewController {
         imagePublisher.subscribe(self)
         imagePublisher.addImagesWithTimer(time: 0.5, repeat: 20, userImages: myImages)
     }
-
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        imagePublisher.removeSubscription(for: self)
     }
     
     private func setupConstraints() {
