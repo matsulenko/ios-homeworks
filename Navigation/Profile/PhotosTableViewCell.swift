@@ -157,7 +157,7 @@ extension PhotosTableViewCell: UICollectionViewDataSource {
             withReuseIdentifier: PhotosCollectionViewCell.identifier,
             for: indexPath) as! PhotosCollectionViewCell
         
-        let photo = photos[indexPath.row]
+        let photo = UIImage(named: photos[indexPath.row])!
         cell.setupMain(with: photo)
         
         return cell

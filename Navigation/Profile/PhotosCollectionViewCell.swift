@@ -35,15 +35,15 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     }
     
     func setup(
-        with photos: String
+        with photos: UIImage
     ) {
-        photosImageView.image = UIImage(named: photos)
+        photosImageView.image = photos
     }
     
     func setupMain(
-        with photos: String
+        with photos: UIImage
     ) {
-        photosImageView.image = UIImage(named: photos)
+        photosImageView.image = photos
         photosImageView.layer.cornerRadius = 6
     }
 }

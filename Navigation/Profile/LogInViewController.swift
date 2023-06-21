@@ -187,7 +187,14 @@ class LogInViewController: UIViewController {
         addSubviews()
         setupConstraints()
         setupView()
-        
+        setDefaultValues()
+    }
+    
+    private func setDefaultValues() {
+        login = "hipster"
+        loginField.text = login
+        password = "123456"
+        passwordField.text = password
     }
     
     override func viewWillAppear(_ animated: Bool) {
