@@ -109,28 +109,48 @@ class LogInViewController: UIViewController {
         return stackView
     }()
     
-    private lazy var logInButton: UIButton = {
-        let button = UIButton()
+    private lazy var logInButton = CustomButton(
+        title: "Log In",
+        titleColor: .white,
+        hasBackgroundImage: true,
+        hasShadow: false,
+        titleFontSize: 15.0,
+        cornerRadius: 10.0,
+        backgroundColor: nil
+    ) { [self] in
+        var userService: UserService
+        #if DEBUG
+        userService = TestUserService()
+        #else
+        userService = CurrentUserService()
+        #endif
+        let profileViewController = ProfileViewController()
         
-        let originalImage = UIImage(named: "BluePixel")
-        let imageWhithAlpha = originalImage!.alpha(0.8)
-                
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10.0
-        button.setTitle("Log In", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 15.0, weight: .regular)
-        button.setTitleColor(.white, for: .normal)
-        button.contentMode = .center
-        button.setBackgroundImage(originalImage, for: .normal)
-        button.setBackgroundImage(imageWhithAlpha, for: .highlighted)
-        button.setBackgroundImage(imageWhithAlpha, for: .selected)
-        button.setBackgroundImage(imageWhithAlpha, for: .disabled)
-        button.layer.masksToBounds = true
-
-        button.addTarget(self, action: #selector(openProfile), for: .touchUpInside)
-                
-        return button
-    }()
+        if self.loginDelegate.check(
+            enteredLogin: login,
+            enteredPassword: password
+        ) == true {
+            navigationController?.pushViewController(
+                profileViewController,
+                animated: true
+            )
+        } else {
+            let alert = UIAlertController(
+                title: "Неверный логин или пароль",
+                message: "Проверьте правильность введённых данных",
+                preferredStyle: .alert
+            )
+            
+            alert.addAction(
+                UIAlertAction(
+                    title: "Ок",
+                    style: .default,
+                    handler: nil
+                )
+            )
+            present(alert, animated: true)
+        }
+    }
     
     private var loginDelegate: LoginViewControllerDelegate
     
@@ -153,32 +173,6 @@ class LogInViewController: UIViewController {
     @objc
     private func passwordChanged(_ textField: UITextField) {
         password = textField.text
-    }
-    
-    @objc
-    private func openProfile(_ button: UIButton) {
-        var userService: UserService
-        #if DEBUG
-        userService = TestUserService()
-        #else
-        userService = CurrentUserService()
-        #endif
-        let profileViewController = ProfileViewController()
-
-        if self.loginDelegate.check(enteredLogin: login, enteredPassword: password) == true {
-            navigationController?.pushViewController(profileViewController, animated: true)
-        } else {
-            let alert = UIAlertController(title: "Неверный логин или пароль", message: "Проверьте правильность введённых данных", preferredStyle: .alert)
-
-            alert.addAction(
-                UIAlertAction(
-                    title: "Ок",
-                    style: .default,
-                    handler: nil
-                )
-            )
-            present(alert, animated: true)
-        }
     }
 
     override func viewDidLoad() {

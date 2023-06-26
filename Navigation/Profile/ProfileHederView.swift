@@ -38,28 +38,23 @@ class ProfileHederView: UIView {
         textField.layer.borderWidth = 1.0
         textField.layer.borderColor = UIColor.black.cgColor
         textField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
-        textField.addTarget(self, action: #selector(buttonPressed), for: .editingDidEndOnExit)
+        textField.addTarget(self, action: #selector(edited), for: .editingDidEndOnExit)
 
         return textField
-        
     }()
     
-    private lazy var setStatusButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 4.0
-        button.layer.shadowOffset = CGSize(width: 4.0, height: 4.0)
-        button.layer.shadowRadius = 4.0
-        button.layer.shadowOpacity = 0.7
-        button.setTitle("Set status", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18.0, weight: .regular)
-        button.setTitleColor(.white, for: .normal)
-        button.contentMode = .center
-        button.backgroundColor = .systemBlue
-        button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
-        
-        return button
-    }()
+    private lazy var setStatusButton = CustomButton(
+        title: "Set status",
+        titleColor: .white,
+        hasBackgroundImage: false,
+        hasShadow: true,
+        titleFontSize: 18.0,
+        cornerRadius: 4.0,
+        backgroundColor: .systemBlue
+    ) { [self] in
+        self.statusLabel.text = self.status
+        self.endEditing(true)
+    }
     
     var avatarImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
@@ -205,7 +200,7 @@ class ProfileHederView: UIView {
     }
     
     @objc
-    private func buttonPressed() {
+    private func edited() {
         statusLabel.text = status
         self.endEditing(true)
     }
