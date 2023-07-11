@@ -23,6 +23,7 @@
 		BCB08D3429DF3649009B9A50 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB08D3329DF3649009B9A50 /* FeedViewController.swift */; };
 		BCB08D3629DF394D009B9A50 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB08D3529DF394D009B9A50 /* PostViewController.swift */; };
 		BCB08D3829DF58A9009B9A50 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB08D3729DF58A9009B9A50 /* InfoViewController.swift */; };
+		BCC4973D2A5DF86400245F73 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC4973C2A5DF86400245F73 /* FeedViewModel.swift */; };
 		BCD18A252A0930A00085DC39 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD18A242A0930A00085DC39 /* LogInViewController.swift */; };
 		BCD48C352A37DC6A009E4A62 /* Checker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD48C342A37DC6A009E4A62 /* Checker.swift */; };
 		BCD48C372A38CB22009E4A62 /* LoginFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD48C362A38CB22009E4A62 /* LoginFactory.swift */; };
@@ -77,6 +78,7 @@
 		BCB08D3329DF3649009B9A50 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		BCB08D3529DF394D009B9A50 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		BCB08D3729DF58A9009B9A50 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		BCC4973C2A5DF86400245F73 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		BCD18A242A0930A00085DC39 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		BCD48C342A37DC6A009E4A62 /* Checker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checker.swift; sourceTree = "<group>"; };
 		BCD48C362A38CB22009E4A62 /* LoginFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFactory.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				BCB08D3329DF3649009B9A50 /* FeedViewController.swift */,
+				BCC4973C2A5DF86400245F73 /* FeedViewModel.swift */,
 				BCE377032A49CB1A009A6670 /* FeedModel.swift */,
 			);
 			path = Feed;
@@ -332,6 +335,7 @@
 				BCB08D3829DF58A9009B9A50 /* InfoViewController.swift in Sources */,
 				BC8C38682A1542A3008D6C36 /* PhotosTableViewCell.swift in Sources */,
 				BC3D80412A16D342003029E3 /* PhotosViewController.swift in Sources */,
+				BCC4973D2A5DF86400245F73 /* FeedViewModel.swift in Sources */,
 				BCE3D8E329EF3A0B00528DA1 /* ProfileViewController.swift in Sources */,
 				BCE58AF22A09250C001D0977 /* TextFieldWithPadding.swift in Sources */,
 				BC3D80432A16DC3B003029E3 /* PhotosCollectionViewCell.swift in Sources */,
