@@ -10,8 +10,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: scene)
 
-        let feedModel = FeedModel()
-        let feedViewController = FeedViewController(feedModelDelegate: feedModel)
+        let feedViewModel = FeedViewModel()
+        let feedViewController = FeedViewController(feedViewModel: feedViewModel)
         feedViewController.title = "Лента"
         feedViewController.view.backgroundColor = .systemBackground
                 

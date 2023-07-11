@@ -2,6 +2,8 @@ import UIKit
 
 final class FeedViewController: UIViewController {
     
+    private var feedViewModel: FeedViewModel
+
     private var typedWord: String?
     private var savedWord: String?
     
@@ -19,7 +21,6 @@ final class FeedViewController: UIViewController {
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
         textField.backgroundColor = .systemGray6
         textField.layer.cornerRadius = 12.0
-//        textField.layer.borderWidth = 1.0
         textField.addTarget(self, action: #selector(typedWordChanged), for: .editingChanged)
         
         textField.delegate = self
@@ -37,13 +38,7 @@ final class FeedViewController: UIViewController {
         backgroundColor: .systemBlue
     ) { [self] in
         savedWord = typedWord
-        if feedModelDelegate.check(word: savedWord ?? "") {
-            checkLabel.text = "Верно!"
-            checkLabel.textColor = .systemGreen
-        } else {
-            checkLabel.text = "Неверно"
-            checkLabel.textColor = .systemRed
-        }
+        feedViewModel.changeStatus(.buttonTapped(savedWord ?? ""))
     }
 
     private lazy var readPostButton = CustomButton(
@@ -62,9 +57,7 @@ final class FeedViewController: UIViewController {
 
         navigationController?.pushViewController(postViewController, animated: true)
     }
-    
-    private var feedModelDelegate: FeedModelDelegate
-    
+        
     private var checkLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -74,8 +67,8 @@ final class FeedViewController: UIViewController {
         return label
     }()
     
-    init(feedModelDelegate: FeedModelDelegate) {
-        self.feedModelDelegate = feedModelDelegate
+    init(feedViewModel: FeedViewModel) {
+        self.feedViewModel = feedViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -94,6 +87,22 @@ final class FeedViewController: UIViewController {
         addSubviews()
         setupConstraints()
         setDefaultValues()
+        bindViewModel()
+    }
+    
+    private func bindViewModel() {
+        feedViewModel.statusChanged = { [weak self] status in
+            switch status {
+            case .initial:
+                self?.checkLabel.text = ""
+            case .success:
+                self?.checkLabel.text = "Верно!"
+                self?.checkLabel.textColor = .systemGreen
+            case .mistake:
+                self?.checkLabel.text = "Неверно"
+                self?.checkLabel.textColor = .systemRed
+            }
+        }
     }
     
     private func addSubviews() {

@@ -7,14 +7,10 @@
 
 import UIKit
 
-protocol FeedModelDelegate {
-    func check(word: String) -> Bool
-}
-
-public final class FeedModel: FeedModelDelegate {
+public final class FeedModel {
     private let secretWord = "Шумахер"
     
-    func check(word: String) -> Bool {
+    func check(_ word: String) -> Bool {
         if word == secretWord {
             return true
         } else {
