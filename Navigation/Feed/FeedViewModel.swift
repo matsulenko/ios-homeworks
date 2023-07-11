@@ -52,26 +52,3 @@ final class FeedViewModel {
         }
     }
 }
-
-
-//final class FeedViewModel {
-//    private let secretWord = "Шумахер"
-//    
-//    func feedViewModelOutput(completion: @escaping (Result<String, Error>) -> Void) {
-//        DispatchQueue.global().async { [weak self] in
-//            guard let self = self else { return }
-//            completion(.success(self.secretWord))
-//        }
-//    }
-//}
-
-
-
-
-//    func check(word: String) -> Bool {
-//        if word == secretWord {
-//            return true
-//        } else {
-//            return false
-//        }
-//    }
